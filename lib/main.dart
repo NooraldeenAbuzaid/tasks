@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'account_info.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,91 +11,70 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const RegistrationScreen(),
+      title: 'Group List View Demo',
+      home: const HomePage(),
     );
   }
 }
 
-class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
-  @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
-}
+  Widget buildMember(String initials, String name, Color color) {
+    return Card(
+      elevation: 5,
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(15),
+        leading: CircleAvatar(
+          backgroundColor: color,
+          radius: 25,
+          child: Text(
+            initials,
+            style: const TextStyle(color: Colors.white, fontSize: 18),
+          ),
+        ),
+        title: Text(name, style: const TextStyle(fontSize: 20)),
+        trailing: const Icon(Icons.chevron_right, size: 35, color: Colors.grey),
+      ),
+    );
+  }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
-  final accountController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  String accountType = "Current";
+  Widget teamTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Text(
+        title,
+        style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Bank Registration")),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            DropdownButtonFormField(
-              value: accountType,
-              decoration: const InputDecoration(
-                labelText: "Account Type",
-                border: OutlineInputBorder(),
-              ),
-              items: const [
-                DropdownMenuItem(value: "Current", child: Text("Current")),
-                DropdownMenuItem(value: "Savings", child: Text("Savings")),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  accountType = value!;
-                });
-              },
-            ),
+      appBar: AppBar(
+        title: const Text('Group List View Demo'),
+        backgroundColor: Colors.blue,
+      ),
+      body: ListView(
+        children: [
+          teamTitle("Team A"),
 
-            const SizedBox(height: 15),
+          buildMember("KL", "Klay Lewis", Colors.pink),
+          buildMember("EW", "Ehsan Woodard", Colors.purple),
+          buildMember("RB", "River Bains", Colors.blueGrey),
 
-            TextField(
-              controller: accountController,
-              decoration: const InputDecoration(
-                labelText: "Account Number",
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.account_balance),
-              ),
-            ),
+          teamTitle("Team B"),
 
-            const SizedBox(height: 15),
+          buildMember("TD", "Toyah Downs", Colors.redAccent),
+          buildMember("TK", "Tyla Kane", Colors.teal),
 
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: "Password",
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.lock),
-              ),
-            ),
+          teamTitle("Team C"),
 
-            const SizedBox(height: 20),
-
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AccountInfoScreen(
-                      accountType: accountType,
-                      accountNumber: accountController.text,
-                      password: passwordController.text,
-                    ),
-                  ),
-                );
-              },
-              child: const Text("Submit"),
-            ),
-          ],
-        ),
+          buildMember("MR", "Marcus Romero", Colors.orange),
+          buildMember("FP", "Farrah Parkes", Colors.deepPurple),
+        ],
       ),
     );
   }
